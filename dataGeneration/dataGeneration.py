@@ -128,6 +128,25 @@ def generateTestData(minLength = 1, maxLength = 5):
     sentence += phrase
   
   return (sentence, phrases, waypoints)
+
+
+# generates a batch of test data for subsentence to waypoint translation
+# called generateTestData multiple times, so there's a mix of
+# beginnings and middle sections of sentences
+def generateTestBatch(batchSize):
+  phrases = [""] * batchSize
+  waypoints = np.zeros([batchSize, 3])
+  
+  i = 0
+  while (i < batchSize):
+    _, p, w = generateTestData()
+    length = min(len(p), batchSize - i)
+    phrases[i : i+length] = p[0 : length]
+    waypoints[i : i+length] = w[0 : length]
+    i += length
+
+  return (phrases, waypoints)
+  
     
 if __name__ == "__main__":
   sentence, phrases, waypoints = generateTestData()
