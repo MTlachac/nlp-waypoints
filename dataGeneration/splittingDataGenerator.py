@@ -37,7 +37,7 @@ linkingWords = [["and", 0],
                 ["followed by", 1]]
 
 
-def generateTestData(minLength = 1, maxLength = 5):
+def generateTestData(minLength = 1, maxLength = 3):
   length = random.randrange(maxLength - minLength + 1) + minLength
   sentence = ""
   motionIndex = 0
@@ -127,29 +127,27 @@ def generateTestData(minLength = 1, maxLength = 5):
     phrases[i] = phrase
     sentence += phrase
   
-  return (sentence, phrases, waypoints)
+  return (sentence, len(phrases[0].split()))
 
 
 # generates a batch of test data for subsentence to waypoint translation
 # called generateTestData multiple times, so there's a mix of
 # beginnings and middle sections of sentences
 def generateTestBatch(batchSize):
-  phrases = [""] * batchSize
-  waypoints = np.zeros([batchSize, 3])
+  sentences = [""] * batchSize
+  splits = np.zeros([batchSize])
   
   i = 0
   while (i < batchSize):
-    _, p, w = generateTestData()
-    length = min(len(p), batchSize - i)
-    phrases[i : i+length] = p[0 : length]
-    waypoints[i : i+length] = w[0 : length]
-    i += length
+    sentence, split = generateTestData()
+    sentences[i] = sentence
+    splits[i] = split
+    i += 1
 
-  return (phrases, waypoints)
+  return (sentences, splits)
   
     
 if __name__ == "__main__":
-  sentence, phrases, waypoints = generateTestData()
+  sentence, split = generateTestData()
   print(sentence)
-  print(phrases)
-  print(waypoints)
+  print(split)
