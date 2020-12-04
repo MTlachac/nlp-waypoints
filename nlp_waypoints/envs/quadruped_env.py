@@ -10,10 +10,6 @@ sys.path.append("../dataGeneration")
 sys.path.append("../../dataGeneration")
 from dataGeneration import generateTestData
 
-# the goal will be multiple points - sim ends when the last goal is reached
-# loss is calculated wrt the current goal
-# maybe divide loss by sentence length?
-
 # set flag to true for visualizing
 GUI = False
 
