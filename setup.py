@@ -10,6 +10,7 @@ setup(name='nlp_waypoints',
         'gym',
         'stable_baselines',
         'numpy==1.19.2',
-        'tensorflow==1.14.0'
+        'tensorflow==1.14.0',
+        'pyquaternion'
       ]
 )
