@@ -126,8 +126,10 @@ def generateTestData(minLength = 1, maxLength = 3):
     waypoints[i] = waypoint
     phrases[i] = phrase
     sentence += phrase
+    expected = np.zeros((30))
+    expected[len(phrases[0].split())] = 1
   
-  return (sentence, len(phrases[0].split()))
+  return (sentence, expected)
 
 
 # generates a batch of test data for subsentence to waypoint translation
@@ -135,7 +137,7 @@ def generateTestData(minLength = 1, maxLength = 3):
 # beginnings and middle sections of sentences
 def generateTestBatch(batchSize):
   sentences = [""] * batchSize
-  splits = np.zeros([batchSize])
+  splits = np.zeros((batchSize,30))
   
   i = 0
   while (i < batchSize):
@@ -151,3 +153,5 @@ if __name__ == "__main__":
   sentence, split = generateTestData()
   print(sentence)
   print(split)
+
+  
