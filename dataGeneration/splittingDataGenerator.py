@@ -137,7 +137,7 @@ def generateTestData(minLength = 1, maxLength = 3):
 # beginnings and middle sections of sentences
 def generateTestBatch(batchSize):
   sentences = [""] * batchSize
-  splits = np.zeros((batchSize,30))
+  splits = np.zeros((30, batchSize))
   
   i = 0
   while (i < batchSize):
