@@ -10,17 +10,14 @@ sys.path.append("../dataGeneration")
 sys.path.append("../../dataGeneration")
 from dataGeneration import generateTestData
 
-# set flag to true for visualizing
-GUI = False
-
 class QuadrupedEnv(gym.Env):
   metadata = {
         'render.modes': ['human', 'rgb_array'],
         'video.frames_per_second' : 50
     }
    
-  def __init__(self):
-    self.physicsClient = p.connect(p.GUI if GUI else p.DIRECT)
+  def __init__(self, gui = False):
+    self.physicsClient = p.connect(p.GUI if gui else p.DIRECT)
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
     self.maxSpeed = 10
@@ -95,7 +92,10 @@ class QuadrupedEnv(gym.Env):
       return True
     return False
 
-  def getReward(self, position, orientation, reachedWaypoint): 
+  def getReward(self, position, orientation, reachedWaypoint):
+    if (self.goalIndex >= self.goal.shape[0]):
+      return 0
+
     q = Quaternion(orientation[3], orientation[0], orientation[1], orientation[2])
     angleToGoal = self.angleDifference(q, self.goal[self.goalIndex, 2])
     distToGoal = np.linalg.norm(self.goal[self.goalIndex,:2] - position[2:])
