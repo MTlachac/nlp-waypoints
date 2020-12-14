@@ -136,16 +136,17 @@ def generateTestData(minLength = 1, maxLength = 3):
 # called generateTestData multiple times, so there's a mix of
 # beginnings and middle sections of sentences
 def generateTestBatch(batchSize):
-  sentences = [""] * batchSize
-  splits = np.zeros((1, batchSize))
+  sentences = []
+  splitarr = []
+  #splits = np.zeros((batchSize, 30))
   
   i = 0
   while (i <= batchSize):
     sentence, split = generateTestData()
-    sentences[i] = sentence
-    splits.concatenate(split)
+    sentences.append(sentence)
+    splitarr.append(split)
     i += 1
-  splits = splits[1:,:]
+  splits = np.vstack(splitarr)
   return (sentences, splits)
   
     
@@ -153,5 +154,4 @@ if __name__ == "__main__":
   sentence, split = generateTestData()
   print(sentence)
   print(split)
-
-  
+ 
