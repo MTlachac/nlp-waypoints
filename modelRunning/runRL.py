@@ -6,10 +6,11 @@ from stable_baselines import PPO2
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines.common.policies import MlpLstmPolicy
 
-LOAD_PATH = "../models/RL/500000.zip"
+LOAD_PATH = "../models/RL/50000.zip"
 
 # create environment
-env = gym.make('nlp-waypoints-v0', **{'gui': True})
+kwargs = {'gui': True}
+env = gym.make('nlp-waypoints-v0', **kwargs)
 vecEnv = DummyVecEnv([lambda: env])
 
 # load model and run

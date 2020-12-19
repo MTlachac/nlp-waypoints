@@ -1,6 +1,7 @@
 import gym
 import nlp_waypoints
 import os
+import tensorflow as tf
 
 from stable_baselines import PPO2
 from stable_baselines.common.vec_env import DummyVecEnv
@@ -11,7 +12,8 @@ SAVE_PATH = "../models/RL/"
 os.makedirs(SAVE_PATH, exist_ok = True)
 
 # create environment
-env = gym.make('nlp-waypoints-v0')
+kwargs = {}
+env = gym.make('nlp-waypoints-v0', **kwargs)
 vecEnv = DummyVecEnv([lambda: env])
 
 # callback for saving models
@@ -22,6 +24,14 @@ def callback(_locals, _globals):
 
   if nSteps % 50000 == 0:
     model.save(SAVE_PATH + str(nSteps))
+
+  if nSteps % 10 == 0:
+    values = [tf.Summary.Value(tag = "debug/resets", simple_value = env.resetCount),
+    #          tf.Summary.Value(tag = "debug/distance", simple_value = env.currentDistance),
+    #          tf.Summary.Value(tag = "debug/angle", simple_value = env.currentAngle),
+    #          tf.Summary.Value(tag = "debug/reward", simple_value = env.currentReward)
+    ]
+    _locals['writer'].add_summary(tf.Summary(value = values), nSteps)
 
   return True
 
