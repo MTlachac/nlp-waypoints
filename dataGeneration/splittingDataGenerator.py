@@ -127,7 +127,12 @@ def generateTestData(minLength = 1, maxLength = 3):
     phrases[i] = phrase
     sentence += phrase
     expected = np.zeros((30))
-    expected[len(phrases[0].split())] = 1
+    i = 0
+    for phrase in phrases:
+      i = i + len(phrase.split())
+      if (i >= 30):
+        break
+      expected[i] = 1
   
   return (sentence, expected)
 
