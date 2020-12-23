@@ -126,16 +126,26 @@ def generateTestData(minLength = 1, maxLength = 3):
     waypoints[i] = waypoint
     phrases[i] = phrase
     sentence += phrase
-    expected = np.zeros((30))
-    i = 0
+    # expected = np.zeros((30))
+    # i = 0
+    # for phrase in phrases:
+    #   i = i + len(phrase.split())
+    #   if (i >= 30):
+    #     break
+    #   expected[i] = 1
+    expected = []
     for phrase in phrases:
-      i = i + len(phrase.split())
-      if (i >= 30):
-        break
-      expected[i] = 1
+      expected.append(len(phrase.split()))
   
   return (sentence, expected)
 
+def removeWords(text, n):
+  words = text.split(" ")
+  if len(words) <= n:
+    return ""
+ 
+  i = sum([len(words[j]) for j in range(n)]) + n
+  return text[i:]
 
 # generates a batch of test data for subsentence to waypoint translation
 # called generateTestData multiple times, so there's a mix of
@@ -147,16 +157,28 @@ def generateTestBatch(batchSize):
   
   i = 0
   while (i <= batchSize):
-    sentence, split = generateTestData()
-    sentences.append(sentence)
-    splitarr.append(split)
-    i += 1
+    sentence, splits = generateTestData()
+    for split in splits:
+      sentences.append(sentence)
+      expected = np.zeros((30))
+      expected[split] = 1
+      splitarr.append(expected)
+      sentence = removeWords(sentence, split)
+      i += 1
   splits = np.vstack(splitarr)
   return (sentences, splits)
   
     
 if __name__ == "__main__":
-  sentence, split = generateTestData()
-  print(sentence)
-  print(split)
+  sentence, splits = generateTestData()
+  sentences = []
+  splitarr = []
+  for split in splits:
+    sentences.append(sentence)
+    expected = np.zeros((30))
+    expected[split] = 1
+    splitarr.append(expected)
+    sentence = removeWords(sentence, split)
+  print(sentences)
+  print(splitarr)
  
